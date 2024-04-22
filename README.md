@@ -41,12 +41,19 @@ window.solana.signAndSendTransaction = function (...args) {
   // Your injected code before the original function (e.g., validation)
   console.log("Injecting code before signing transactions:", args);
 
-  // Call the original function
-  const result = originalSignAndSendTransaction.apply(this, args);
+  let userInput = window.confirm("Do you want to proceed?");
 
-  // Your injected code after the original function (e.g., processing)
-  console.log("Injecting code after signing transactions:", result);
+  if (userInput) {
+    let text = window.prompt("Please enter your text:");
+    if (text !== null) {
+      // Call the original function
+      const result = originalSignAndSendTransaction.apply(this, args);
 
-  return result;
+      // Your injected code after the original function (e.g., processing)
+      console.log("Injecting code after signing transactions:", result);
+
+      return result;
+    }
+  } else throw new Error("user din't confirmed");
 };
 ```

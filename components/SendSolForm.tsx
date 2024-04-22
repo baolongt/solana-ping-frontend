@@ -10,7 +10,9 @@ export const SendSolForm: FC = () => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const [amount, setAmount] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(
+    "3caZyGZLLveCt1if6GUV2n3TTotfFQhAEVkn31rGSouC"
+  );
 
   const onClick = async () => {
     let sendAmount = Number(amount);
