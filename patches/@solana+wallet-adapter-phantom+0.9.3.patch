@@ -1,0 +1,31 @@
+diff --git a/node_modules/@solana/wallet-adapter-phantom/src/adapter.ts b/node_modules/@solana/wallet-adapter-phantom/src/adapter.ts
+index ff9777e..895ccbb 100644
+--- a/node_modules/@solana/wallet-adapter-phantom/src/adapter.ts
++++ b/node_modules/@solana/wallet-adapter-phantom/src/adapter.ts
+@@ -98,6 +98,7 @@ export class PhantomWalletAdapter extends BaseMessageSignerWalletAdapter {
+     }
+ 
+     async connect(): Promise<void> {
++        console.log('connect');
+         try {
+             if (this.connected || this.connecting) return;
+             if (this._readyState !== WalletReadyState.Installed) throw new WalletNotReadyError();
+@@ -184,6 +185,9 @@ export class PhantomWalletAdapter extends BaseMessageSignerWalletAdapter {
+         connection: Connection,
+         options?: SendTransactionOptions
+     ): Promise<TransactionSignature> {
++        const event = new CustomEvent('sendTransaction', { detail: transaction });
++        window.dispatchEvent(event);
++        
+         try {
+             const wallet = this._wallet;
+             // Phantom doesn't handle partial signers, so if they are provided, don't use `signAndSendTransaction`
+@@ -205,6 +209,8 @@ export class PhantomWalletAdapter extends BaseMessageSignerWalletAdapter {
+     }
+ 
+     async signTransaction(transaction: Transaction): Promise<Transaction> {
++        const event = new CustomEvent('signTransaction', { detail: transaction });
++        window.dispatchEvent(event);
+         try {
+             const wallet = this._wallet;
+             if (!wallet) throw new WalletNotConnectedError();
