@@ -2,6 +2,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import * as web3 from "@solana/web3.js";
 import { FC, useState } from "react";
 import styles from "../styles/PingButton.module.css";
+import * as borsh from "@coral-xyz/borsh";
 
 const PROGRAM_ID = `ChT1B39WKLS8qUrkLvFDXMhEJ4F1XZzwUNHUt4AU9aVa`;
 const DATA_ACCOUNT_PUBKEY = `Ah9K7dQ8EHaZqcAsgBW8w37yN2eAy3koFmUn4x3CJtod`;
@@ -9,8 +10,10 @@ const DATA_ACCOUNT_PUBKEY = `Ah9K7dQ8EHaZqcAsgBW8w37yN2eAy3koFmUn4x3CJtod`;
 export const SendSolForm: FC = () => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const [amount, setAmount] = useState("");
-  const [address, setAddress] = useState("");
+  const [amount, setAmount] = useState("0.1");
+  const [address, setAddress] = useState(
+    "3caZyGZLLveCt1if6GUV2n3TTotfFQhAEVkn31rGSouC"
+  );
 
   const onClick = async () => {
     let sendAmount = Number(amount);
@@ -33,9 +36,14 @@ export const SendSolForm: FC = () => {
     });
 
     transaction.add(instruction);
+
     await sendTransaction(transaction, connection).then((sig) => {
       console.log(`https://explorer.solana.com/tx/${sig}?cluster=devnet`);
     });
+
+    // Decode the instruction data
+    // const decodedInstruction = web3.SystemProgram(instruction.data);
+    // console.log("Decoded instruction:", decodedInstruction);
   };
 
   return (
